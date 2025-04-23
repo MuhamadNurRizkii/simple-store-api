@@ -15,6 +15,7 @@ app.use(express.json());
 // routing
 app.use("/", router);
 
+module.exports = app;
 module.exports.handler = serverless(app);
 
 connectDB().then(() => {
