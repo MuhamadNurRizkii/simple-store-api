@@ -1,6 +1,10 @@
 const express = require("express");
 const register = require("../controllers/register");
 const login = require("../controllers/login");
+const getProduct = require("../controllers/get-product");
+const createProduct = require("../controllers/create-product");
+const updateProduct = require("../controllers/update-product");
+const deleteProduct = require("../controllers/delete-product");
 
 const router = express.Router();
 
@@ -9,5 +13,17 @@ router.post("/login", login);
 
 // routing to register
 router.post("/register", register);
+
+// routing to get products
+router.get("/products", getProduct);
+
+// routing to create products
+router.post("/products", createProduct);
+
+// routing to update products
+router.patch("/products/:id", updateProduct);
+
+// routing to delete producst
+router.delete("/products/:id", deleteProduct);
 
 module.exports = router;
