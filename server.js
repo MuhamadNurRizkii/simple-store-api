@@ -6,7 +6,7 @@ const router = require("./routers/route.js");
 // database
 const connectDB = require("./config/database.js");
 
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 
 // middleware
 app.use(express.json());

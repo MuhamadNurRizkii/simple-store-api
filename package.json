@@ -1,4 +1,17 @@
 {
+  "name": "rest-api",
+  "version": "1.0.0",
+  "description": "Create Simple Store API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "20.15.1"
+  },
+  "keywords": [],
+  "author": "Rizuka",
+  "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "dotenv": "^16.5.0",
