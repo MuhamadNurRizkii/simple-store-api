@@ -8,7 +8,7 @@ const deleteProduct = async (req, res) => {
   // ambil id dari params url
   const id = req.params.id;
   // pilih collection products
-  const collection = db.collection("producst");
+  const collection = db.collection("products");
 
   // query untuk menghapus data
   await collection.deleteOne({

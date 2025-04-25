@@ -5,6 +5,7 @@ const getProduct = require("../controllers/get-product");
 const createProduct = require("../controllers/create-product");
 const updateProduct = require("../controllers/update-product");
 const deleteProduct = require("../controllers/delete-product");
+const verifyJWT = require("../middleware/verify-token");
 
 const router = express.Router();
 
@@ -15,15 +16,15 @@ router.post("/login", login);
 router.post("/register", register);
 
 // routing to get products
-router.get("/products", getProduct);
+router.get("/products", verifyJWT, getProduct);
 
 // routing to create products
-router.post("/products", createProduct);
+router.post("/products", verifyJWT, createProduct);
 
 // routing to update products
-router.patch("/products/:id", updateProduct);
+router.patch("/products/:id", verifyJWT, updateProduct);
 
 // routing to delete producst
-router.delete("/products/:id", deleteProduct);
+router.delete("/products/:id", verifyJWT, deleteProduct);
 
 module.exports = router;

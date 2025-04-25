@@ -1,6 +1,7 @@
 const connectDB = require("../config/database");
 const { ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const login = async (req, res) => {
   // konek ke database
@@ -21,7 +22,7 @@ const login = async (req, res) => {
   // ambil data username dari database
   const isUsername = await collection.findOne({ username });
   // validasi jika usernam tidak ada di database
-  if (!username) {
+  if (!isUsername) {
     return res.status(400).json({
       message: "Username / Password salah!!",
     });
@@ -34,13 +35,25 @@ const login = async (req, res) => {
       message: "Username / Password salah!!",
     });
   }
+  // create jwt
+  const accessToken = jwt.sign(
+    { username: isUsername.username },
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: "60s" }
+  );
+
+  const refreshToken = jwt.sign(
+    { username: isUsername.username },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "1d" }
+  );
 
   // kirim data ketika login berhasil
   res.json({
     message: "Login berhasil!",
     data: {
-      _id: new ObjectId(isUsername._id),
-      username,
+      accessToken,
+      refreshToken,
     },
   });
 };
