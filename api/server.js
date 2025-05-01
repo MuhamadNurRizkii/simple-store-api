@@ -16,6 +16,7 @@ app.use("/assets", express.static("uploads/"));
 // routing
 app.use("/", router);
 
+module.exports = app;
 module.exports.handler = serverless(app);
 
 connectDB().then(() => {
