@@ -6,6 +6,7 @@ const createProduct = require("../controllers/create-product");
 const updateProduct = require("../controllers/update-product");
 const deleteProduct = require("../controllers/delete-product");
 const verifyJWT = require("../middleware/verify-token");
+const upload = require("../middleware/multer.js");
 
 const router = express.Router();
 
@@ -16,15 +17,15 @@ router.post("/login", login);
 router.post("/register", register);
 
 // routing to get products
-router.get("/products", verifyJWT, getProduct);
+router.get("/products", getProduct);
 
 // routing to create products
-router.post("/products", verifyJWT, createProduct);
+router.post("/products", upload.single("image"), createProduct);
 
 // routing to update products
-router.patch("/products/:id", verifyJWT, updateProduct);
+router.patch("/products/:id", updateProduct);
 
 // routing to delete producst
-router.delete("/products/:id", verifyJWT, deleteProduct);
+router.delete("/products/:id", deleteProduct);
 
 module.exports = router;

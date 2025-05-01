@@ -11,11 +11,11 @@ const port = process.env.PORT || 4000;
 
 // middleware
 app.use(express.json());
+app.use("/assets", express.static("uploads/"));
 
 // routing
 app.use("/", router);
 
-module.exports = app;
 module.exports.handler = serverless(app);
 
 connectDB().then(() => {
