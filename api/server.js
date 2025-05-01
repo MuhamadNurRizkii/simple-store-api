@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const router = require("../routers/route.js");
 const serverless = require("serverless-http");
+const cors = require("cors");
 
 // database
 const connectDB = require("../config/database.js");
@@ -10,6 +11,7 @@ const connectDB = require("../config/database.js");
 const port = process.env.PORT || 4000;
 
 // middleware
+app.use(cors());
 app.use(express.json());
 app.use("/assets", express.static("uploads/"));
 
