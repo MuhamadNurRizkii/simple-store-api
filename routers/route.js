@@ -17,15 +17,15 @@ router.post("/login", login);
 router.post("/register", register);
 
 // routing to get products
-router.get("/products", getProduct);
+router.get("/products", verifyJWT, getProduct);
 
 // routing to create products
-router.post("/products", upload.single("image"), createProduct);
+router.post("/products", verifyJWT, upload.single("image"), createProduct);
 
 // routing to update products
-router.patch("/products/:id", updateProduct);
+router.patch("/products/:id", verifyJWT, updateProduct);
 
 // routing to delete producst
-router.delete("/products/:id", deleteProduct);
+router.delete("/products/:id", verifyJWT, deleteProduct);
 
 module.exports = router;
