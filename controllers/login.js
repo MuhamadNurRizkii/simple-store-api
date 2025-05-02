@@ -4,58 +4,62 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const login = async (req, res) => {
-  // konek ke database
-  const db = await connectDB();
+  try {
+    // konek ke database
+    const db = await connectDB();
 
-  // ambil input value dari request body
-  const { username, password } = req.body;
-  // pilih collection users
-  const collection = db.collection("users");
+    // ambil input value dari request body
+    const { username, password } = req.body;
+    // pilih collection users
+    const collection = db.collection("users");
 
-  // validasi jika username dan password tidak diisi / tidak ada
-  if (!username || !password) {
-    return res.status(400).json({
-      message: "username atau password wajib diisi!",
+    // validasi jika username dan password tidak diisi / tidak ada
+    if (!username || !password) {
+      return res.status(400).json({
+        message: "username atau password wajib diisi!",
+      });
+    }
+
+    // ambil data username dari database
+    const isUsername = await collection.findOne({ username });
+    // validasi jika usernam tidak ada di database
+    if (!isUsername) {
+      return res.status(400).json({
+        message: "Username / Password salah!!",
+      });
+    }
+
+    // validasi jika password salah
+    const isPassword = await bcrypt.compare(password, isUsername.password);
+    if (!isPassword) {
+      return res.status(400).json({
+        message: "Username / Password salah!!",
+      });
+    }
+    // create jwt
+    const accessToken = jwt.sign(
+      { username: isUsername.username },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "60s" }
+    );
+
+    const refreshToken = jwt.sign(
+      { username: isUsername.username },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    // kirim data ketika login berhasil
+    res.json({
+      message: "Login berhasil!",
+      data: {
+        accessToken,
+        refreshToken,
+      },
     });
+  } catch (err) {
+    console.log("Error:", err);
   }
-
-  // ambil data username dari database
-  const isUsername = await collection.findOne({ username });
-  // validasi jika usernam tidak ada di database
-  if (!isUsername) {
-    return res.status(400).json({
-      message: "Username / Password salah!!",
-    });
-  }
-
-  // validasi jika password salah
-  const isPassword = await bcrypt.compare(password, isUsername.password);
-  if (!isPassword) {
-    return res.status(400).json({
-      message: "Username / Password salah!!",
-    });
-  }
-  // create jwt
-  const accessToken = jwt.sign(
-    { username: isUsername.username },
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "60s" }
-  );
-
-  const refreshToken = jwt.sign(
-    { username: isUsername.username },
-    process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "1d" }
-  );
-
-  // kirim data ketika login berhasil
-  res.json({
-    message: "Login berhasil!",
-    data: {
-      accessToken,
-      refreshToken,
-    },
-  });
 };
 
 module.exports = login;
