@@ -36,6 +36,10 @@ const login = async (req, res) => {
         message: "Username / Password salah!!",
       });
     }
+
+    console.log(process.env.ACCESS_TOKEN_SECRET);
+    console.log(process.env.REFRESH_TOKEN_SECRET);
+
     // create jwt
     const accessToken = jwt.sign(
       { username: isUsername.username },
