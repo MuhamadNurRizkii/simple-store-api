@@ -5,6 +5,7 @@ const getProduct = require("../controllers/get-product");
 const createProduct = require("../controllers/create-product");
 const updateProduct = require("../controllers/update-product");
 const deleteProduct = require("../controllers/delete-product");
+const showProfile = require("../controllers/show-profile.js");
 const verifyJWT = require("../middleware/verify-token");
 const upload = require("../middleware/multer.js");
 
@@ -15,6 +16,9 @@ router.post("/login", login);
 
 // routing to register
 router.post("/register", register);
+
+// routing to profile
+router.get("/profile/:id", verifyJWT, showProfile);
 
 // routing to get products
 router.get("/products", verifyJWT, getProduct);
