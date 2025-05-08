@@ -57,6 +57,7 @@ const login = async (req, res) => {
     res.json({
       message: "Login berhasil!",
       data: {
+        id: new ObjectId(isUsername._id),
         accessToken,
         refreshToken,
       },
