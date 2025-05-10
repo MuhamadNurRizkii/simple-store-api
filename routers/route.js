@@ -7,7 +7,6 @@ const updateProduct = require("../controllers/update-product");
 const deleteProduct = require("../controllers/delete-product");
 const showProfile = require("../controllers/show-profile.js");
 const verifyJWT = require("../middleware/verify-token");
-const upload = require("../middleware/multer.js");
 
 const router = express.Router();
 
@@ -24,7 +23,7 @@ router.get("/profile/:id", verifyJWT, showProfile);
 router.get("/products", verifyJWT, getProduct);
 
 // routing to create products
-router.post("/products", verifyJWT, upload.single("image"), createProduct);
+router.post("/products", verifyJWT, createProduct);
 
 // routing to update products
 router.patch("/products/:id", verifyJWT, updateProduct);

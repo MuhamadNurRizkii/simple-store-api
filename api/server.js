@@ -4,6 +4,7 @@ const app = express();
 const router = require("../routers/route.js");
 const serverless = require("serverless-http");
 const cors = require("cors");
+const path = require("path");
 
 // database
 const connectDB = require("../config/database.js");
@@ -13,7 +14,7 @@ const port = process.env.PORT || 4000;
 // middleware
 app.use(cors());
 app.use(express.json());
-app.use("/assets", express.static("uploads/"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // routing
 app.use("/", router);
