@@ -8,6 +8,9 @@ const createProduct = async (req, res) => {
   const collection = db.collection("products");
   // ambil input value dari request body
   const { nama, harga, stok, kategori } = req.body;
+  const image = req.file ? req.file.filename : null;
+  console.log(image);
+  console.log(nama);
 
   // validasi jika input value-nya kosong / belum diisi
   if (!nama || !harga || !stok || !kategori) {
@@ -19,9 +22,10 @@ const createProduct = async (req, res) => {
   // masukkan semua data product ke database
   await collection.insertOne({
     nama,
-    harga,
-    stok,
+    harga: Number(harga),
+    stok: Number(stok),
     kategori,
+    image,
   });
 
   // kirim pesan bahwa data baru berhasil dibuat
@@ -29,9 +33,10 @@ const createProduct = async (req, res) => {
     message: "Data baru berhasil ditambahkan!!",
     data: {
       nama,
-      harga,
-      stok,
+      harga: Number(harga),
+      stok: Number(stok),
       kategori,
+      image,
     },
   });
 };
